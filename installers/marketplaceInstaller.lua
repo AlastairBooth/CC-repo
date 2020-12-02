@@ -56,7 +56,7 @@ local function downloadMarketplace(url, filePath)
     end
 end
 
-local apiDownload = downloadAPI("####", folder .. "/apis/marketplace")
+local apiDownload = downloadAPI("https://raw.githubusercontent.com/AlastairBooth/CC-repo/main/apis/marketplace.lua", folder .. "/apis/marketplace")
 if apiDownload then
     print("marketplace API downloaded..")
 else
