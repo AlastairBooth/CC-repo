@@ -1,0 +1,10 @@
+{
+    "id": "example",
+    "paste": "xxxxxx",
+    "apis": [
+        {
+            "id": "example",
+            "url": "xxxxxx"
+        }
+    ]
+}

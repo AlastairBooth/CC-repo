@@ -1,0 +1,16 @@
+{
+    "name": "example",
+    "auto_update": "false",
+    "programs": [
+        {
+            "id": "example",
+            "paste": "xxxxxx",
+            "version": "1.0.0"
+        },
+        {
+            "id": "example2",
+            "url": "www.xxxxxx.com/xxxx",
+            "version": "1.0.0"
+        }
+    ]
+}
