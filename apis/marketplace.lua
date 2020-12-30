@@ -36,19 +36,20 @@ function downloadProgram(id)
     end
 end
 
-local function getMarketplaceJsonFromFile(filename)
-    local file = assert(fs.open(filename, "r"))
-    local url = file.readAll()
-    file.close()
-    return getMarketplaceJson(url)
-end
-
 local function getMarketplaceJson(url)
     local response = assert(http.get(url))
     local sResponse = response.readAll()
     response.close()
     local json_obj = json.decode(sResponse)
     return json_obj
+end
+
+local function getMarketplaceJsonFromFile(filename)
+    local file = assert(fs.open(filename, "r"))
+    local url = file.readAll()
+    file.close()
+    local j = getMarketplaceJson(url)
+    return j
 end
 
 function getAvailableProgramIDs()
