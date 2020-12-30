@@ -58,7 +58,7 @@ function getAvailableProgramIDs()
     local marketplaceList = fs.list(folder .. "/" .. marketplace_subfolder)
     for _, file in ipairs(marketplaceList) do
         local j = getMarketplaceJsonFromFile(folder .. "/" .. marketplace_subfolder .. "/" .. file)
-        for p in j.programs do
+        for _, p in ipairs(j.programs) do
             r[i] = p.id
             i = i + 1
         end
