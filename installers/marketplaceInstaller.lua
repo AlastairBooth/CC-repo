@@ -21,7 +21,7 @@ local function downloadAPI(url, filePath)
         if response then
             local sResponse = response.readAll()
 			response.close()
-            local file = fs.open(filePath, "w")
+            local file = assert(fs.open(filePath, "w"))
             file.write(sResponse)
             file.flush()
             file.close()
@@ -58,7 +58,7 @@ local function downloadMarketplace(url, filePath)
             local marketplace_name = json_obj.name
             -- are you sure overwrite check
     
-            local file = fs.open(filePath .. "/" .. marketplace_name, "w")
+            local file = assert(fs.open(filePath .. "/" .. marketplace_name, "w"))
             file.write(url)
 			file.flush()
             file.close()

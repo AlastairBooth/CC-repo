@@ -8,52 +8,55 @@ end
 
 -->> downloads program from id
 function downloadProgram(id)
-    for f in fs.list(folder .. "/" .. marketplace_subfolder) do
-        local marketplaceUrl = f.readAll()
-        local response = http.get(marketplaceUrl)
-        local j = nil
-        if response then
-            local sResponse = response.readAll()
-            response.close()
-            j = json.decode(sResponse)
-        else
-            print("ERROR - no response from marketplace URL: " .. marketplaceUrl)
-            return false
-        end
-        for p in j.programs do
-            if p.id == id then
-                if not isEmpty(p.paste) then
-                    shell.run("pastebin", "get", p.paste, folder .. "/" .. program_subfolder .. "/" .. p.id)
+    local programs = getAvailableProgramIDs()
+    for p in programs do
+        if p.id == id then
+            if not isEmpty(p.paste) then
+                shell.run("pastebin", "get", p.paste, folder .. "/" .. program_subfolder .. "/" .. p.id)
+                return true
+            elseif not isEmpty(p.url) then
+                local response = http.get(url)
+                if response then
+                    local sResponse = response.readAll()
+                    response.close()
+                    local file = assert(fs.open(folder .. "/" .. program_subfolder .. "/" .. p.id, "w"))
+                    file.write(url)
+                    file.flush()
+                    file.close()
                     return true
-                elseif not isEmpty(p.url) then
-                    local response = http.get(url)
-                    if response then
-                        local sResponse = response.readAll()
-                        response.close()
-                        local file = fs.open(folder .. "/" .. program_subfolder .. "/" .. p.id, "w")
-                        file.write(url)
-                        file.flush()
-                        file.close()
-                        return true
-                    else
-                        print("ERROR - no response from URL: " .. p.url)
-                        return false
-                    end
                 else
-                    print("ERROR - no download location found for: " .. p.name)
+                    print("ERROR - no response from URL: " .. p.url)
                     return false
                 end
+            else
+                print("ERROR - no download location found for: " .. p.name)
+                return false
             end
         end
     end
+end
+
+local function getMarketplaceJsonFromFile(filename)
+    local file = assert(fs.open(filename, "r"))
+    local url = file.readAll()
+    file.close()
+    return getMarketplaceJson(url)
+end
+
+local function getMarketplaceJson(url)
+    local response = assert(http.get(url))
+    local sResponse = response.readAll()
+    response.close()
+    local json_obj = json.decode(sResponse)
+    return json_obj
 end
 
 function getAvailableProgramIDs()
     local r = {}
     local i = 1
     local marketplaceList = fs.list(folder .. "/" .. marketplace_subfolder)
-    for _, file in marketplaceList do
-        local j = json.decodeFromFile(folder .. "/" .. marketplace_subfolder .. "/" .. file)
+    for _, file in ipairs(marketplaceList) do
+        local j = getMarketplaceJsonFromFile(folder .. "/" .. marketplace_subfolder .. "/" .. file)
         for p in j.programs do
             r[i] = p.id
             i = i + 1
