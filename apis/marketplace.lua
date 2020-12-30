@@ -7,7 +7,7 @@ local function isEmpty(s)
 end
 
 -->> downloads program from id
-local function downloadProgram(id)
+function downloadProgram(id)
     for f in fs.list(folder .. "/" .. marketplace_subfolder) do
         local marketplaceUrl = f.readAll()
         local response = http.get(marketplaceUrl)
@@ -48,7 +48,7 @@ local function downloadProgram(id)
     end
 end
 
-local function getAvailableProgramIDs()
+function getAvailableProgramIDs()
     local r = {}
     local i = 1
     for f in fs.list(folder .. "/" .. marketplace_subfolder) do
@@ -61,21 +61,21 @@ local function getAvailableProgramIDs()
     return r
 end
 
-local function getProgramIDs()
+function getProgramIDs()
     return fs.list(folder .. "/" .. program_subfolder)
 end
 
-local function removeProgram(id)
+function removeProgram(id)
     fs.delete(folder .. "/" .. program_subfolder .. "/" .. id)
 end
 
-local function updateProgram(id)
+function updateProgram(id)
     removeProgram(folder, id)
     local r = downloadProgram(folder, id)
     return r
 end
 
-local function updateAllPrograms()
+function updateAllPrograms()
     for i in getProgramIDs(folder) do
         local r = updateProgram(folder, i)
         if not r then
