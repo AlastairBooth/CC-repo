@@ -51,8 +51,9 @@ end
 function getAvailableProgramIDs()
     local r = {}
     local i = 1
-    for f in fs.list(folder .. "/" .. marketplace_subfolder) do
-        local j = json.decodeFromFile(f)
+    local marketplaceList = fs.list(folder .. "/" .. marketplace_subfolder)
+    for _, file in marketplaceList do
+        local j = json.decodeFromFile(folder .. "/" .. marketplace_subfolder .. "/" .. file)
         for p in j.programs do
             r[i] = p.id
             i = i + 1
