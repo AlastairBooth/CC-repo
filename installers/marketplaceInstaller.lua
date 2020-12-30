@@ -23,7 +23,7 @@ local function downloadAPI(url, filePath)
 			response.close()
             local file = fs.open(filePath, "w")
             file.write(sResponse)
-			response.close()
+            file.flush()
             file.close()
             return true
         else

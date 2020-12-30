@@ -13,8 +13,8 @@ local function downloadProgram(id)
         local response = http.get(marketplaceUrl)
         local j = nil
         if response then
-			local sResponse = response.readAll()
-			response.close()
+            local sResponse = response.readAll()
+            response.close()
             j = json.decode(sResponse)
         else
             print("ERROR - no response from marketplace URL: " .. marketplaceUrl)
@@ -25,14 +25,14 @@ local function downloadProgram(id)
                 if not isEmpty(p.paste) then
                     shell.run("pastebin", "get", p.paste, folder .. "/" .. program_subfolder .. "/" .. p.id)
                     return true
-                else if not isEmpty(p.url) then
+                elseif not isEmpty(p.url) then
                     local response = http.get(url)
                     if response then
                         local sResponse = response.readAll()
                         response.close()
                         local file = fs.open(folder .. "/" .. program_subfolder .. "/" .. p.id, "w")
                         file.write(url)
-			            file.flush()
+                        file.flush()
                         file.close()
                         return true
                     else
